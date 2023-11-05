@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Parallax Reminder Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+        }
+
+        .parallax {
+            background-image: url('parallax_background.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #800080;
+            text-align: center;
+            padding: 100px;
+        }
+
+        .parallax-content {
+            padding: 100px 0;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .alert {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .bg-warning {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parallax">
+        <h1 class="text-center">Reminder Application</h1>
+    </div>
+
+    <div class="parallax-content">
+        <div class="container">
+            <h2 class="text-center">Set a Reminder</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="day">Select Day of the Week:</label>
+                        <select class="form-control" id="day">
+                            <option value="sunday">Sunday</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Select Time:</label>
+                        <input type="time" class="form-control" id="time">
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">Select Activity:</label>
+                        <select class="form-control" id="activity">
+                            <option value="Wake up">Wake up</option>
+                            <option value="Go to gym">Go to gym</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Meetings">Meetings</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Quick nap">Quick nap</option>
+                            <option value="Go to library">Go to library</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Go to sleep">Go to sleep</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="setReminder()">Set Reminder</button>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-4">
+                    <div class="alert output bg-warning" id="output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setReminder() {
+            const day = document.getElementById("day").value;
+            const time = document.getElementById("time").value;
+            const activity = document.getElementById("activity").value;
+
+            const reminderTime = new Date();
+            reminderTime.setHours(time.split(":")[0]);
+            reminderTime.setMinutes(time.split(":")[1]);
+            reminderTime.setSeconds(0);
+
+            const currentTime = new Date();
+
+            if (reminderTime <= currentTime) {
+                document.getElementById("output").classList.remove("alert-success");
+                document.getElementById("output").classList.add("alert-danger");
+                document.getElementById("output").textContent = "Invalid time. Please select a future time.";
+            } else {
+                const timeDiff = reminderTime - currentTime;
+                setTimeout(() => {
+                    document.getElementById("output").classList.remove("alert-danger");
+                    document.getElementById("output").classList.add("alert-success");
+                    document.getElementById("output").textContent = "It's time for " + activity;
+                    // You can add code here to play a sound/chime
+                }, timeDiff);
+            }
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
